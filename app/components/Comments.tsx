@@ -13,7 +13,8 @@ export default function Comments({ slug }: { slug: string }) {
 
   async function load() {
 
-    const res = await fetch(`/api/comments/${slug}`, {
+    // ✅ FIX: Cache verhindern
+    const res = await fetch(`/api/comments/${slug}?t=${Date.now()}`, {
       cache: "no-store"
     });
 
@@ -69,7 +70,6 @@ export default function Comments({ slug }: { slug: string }) {
 
 
 
-  // ✅ FIX HIER
   async function deleteComment(id: number) {
 
     const token = prompt("Admin Passwort eingeben:");
@@ -95,7 +95,7 @@ export default function Comments({ slug }: { slug: string }) {
 
       alert("Kommentar gelöscht ✅");
 
-      // ✅ DIREKT AUS STATE ENTFERNEN
+      // direkt aus UI entfernen
       setComments((prev) =>
         prev.filter((c) => c.id !== id)
       );

@@ -74,7 +74,7 @@ export async function POST(
 
 
 
-// ✅ DELETE (NEU – DAS HAT GEFEHLT)
+// ✅ DELETE — FINAL FIX
 export async function DELETE(
  req: Request,
  context: { params: Promise<{ slug: string }> }
@@ -87,7 +87,7 @@ export async function DELETE(
  const id = body.id;
  const token = body.token;
 
- // Passwort prüfen
+
  if (token !== process.env.ADMIN_DELETE_TOKEN) {
 
   return NextResponse.json(
@@ -97,11 +97,16 @@ export async function DELETE(
 
  }
 
- const { error } = await supabase
+
+ // ⭐⭐⭐ DAS IST DER FIX ⭐⭐⭐
+
+ const { error, data } = await supabase
   .from("comments")
   .delete()
   .eq("id", id)
-  .eq("slug", slug);
+  .eq("slug", slug)
+  .select();   // ⭐ WICHTIG
+
 
  if (error) {
 
@@ -112,6 +117,10 @@ export async function DELETE(
 
  }
 
- return NextResponse.json({ success: true });
+
+ return NextResponse.json({
+  success: true,
+  deleted: data
+ });
 
 }
