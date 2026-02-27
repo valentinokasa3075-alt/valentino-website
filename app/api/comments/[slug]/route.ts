@@ -3,24 +3,19 @@ import { createClient } from "@supabase/supabase-js";
 
 export const dynamic = "force-dynamic";
 
-// ✅ FIX 1: sichere Prüfung der ENV Variablen
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseAnonKey) {
- throw new Error("Supabase environment variables are missing");
-}
+const supabaseUrl = process.env.SUPABASE_URL!;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY!;
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 
-// ✅ FIX 2: params ohne Promise
+// ✅ GET
 export async function GET(
  req: Request,
- { params }: { params: { slug: string } }
+ context: { params: Promise<{ slug: string }> }
 ) {
 
- const slug = params.slug;
+ const { slug } = await context.params;
 
  const { data, error } = await supabase
   .from("comments")
@@ -40,12 +35,13 @@ export async function GET(
 
 
 
+// ✅ POST
 export async function POST(
  req: Request,
- { params }: { params: { slug: string } }
+ context: { params: Promise<{ slug: string }> }
 ) {
 
- const slug = params.slug;
+ const { slug } = await context.params;
 
  const body = await req.json();
 
