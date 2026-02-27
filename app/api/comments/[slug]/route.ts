@@ -1,58 +1,46 @@
-import { NextResponse } from "next/server"
-import { supabase } from "@/lib/supabase"
+import { NextResponse } from "next/server";
+import { createClient } from "@supabase/supabase-js";
 
+const supabase = createClient(
+ process.env.SUPABASE_URL!,
+ process.env.SUPABASE_ANON_KEY!
+);
 
-
-
-// GET comments
 export async function GET(
-  req: Request,
-  context: { params: { slug: string } }
+ req: Request,
+ context: { params: { slug: string } }
 ) {
+ const { slug } = context.params;
 
-  const slug = context.params.slug
+ const { data, error } = await supabase
+  .from("comments")
+  .select("*")
+  .eq("slug", slug)
+  .order("created_at", { ascending: true });
 
-  const { data, error } = await supabase
-    .from("comments")
-    .select("*")
-    .eq("slug", slug)
-    .order("created_at", { ascending: false })
+ if (error)
+  return NextResponse.json({ error: error.message }, { status: 500 });
 
-
-  if (error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
-
-
-  return NextResponse.json(data)
+ return NextResponse.json(data);
 }
 
-
-
-
-
-// POST comment
 export async function POST(
-  req: Request,
-  context: { params: { slug: string } }
+ req: Request,
+ context: { params: { slug: string } }
 ) {
+ const { slug } = context.params;
+ const body = await req.json();
 
-  const slug = context.params.slug
+ const { error } = await supabase.from("comments").insert([
+  {
+   slug,
+   name: body.name,
+   message: body.message,
+  },
+ ]);
 
-  const body = await req.json()
+ if (error)
+  return NextResponse.json({ error: error.message }, { status: 500 });
 
-
-  const { error } = await supabase
-    .from("comments")
-    .insert({
-      slug,
-      name: body.name,
-      message: body.message
-    })
-
-
-  if (error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
-
-
-  return NextResponse.json({ success: true })
+ return NextResponse.json({ success: true });
 }
