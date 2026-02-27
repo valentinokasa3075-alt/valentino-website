@@ -1,125 +1,42 @@
-import { db } from "@/lib/db";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server"
+import { supabase } from "@/lib/supabase"
 
-
-
-// GET COMMENTS
 export async function GET(
-  req: NextRequest,
-  context: { params: Promise<{ slug: string }> }
+  req: Request,
+  { params }: { params: { slug: string } }
 ) {
+  const { data, error } = await supabase
+    .from("comments")
+    .select("*")
+    .eq("slug", params.slug)
+    .order("created_at", { ascending: false })
 
-  const { slug } = await context.params;
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
 
-  const comments = db
-    .prepare(`
-      SELECT id, name, text, createdAt, likes
-      FROM comments
-      WHERE slug = ?
-      ORDER BY id DESC
-    `)
-    .all(slug);
-
-  return NextResponse.json(comments);
-
+  return NextResponse.json(data)
 }
 
-
-
-
-// POST COMMENT
 export async function POST(
-  req: NextRequest,
-  context: { params: Promise<{ slug: string }> }
+  req: Request,
+  { params }: { params: { slug: string } }
 ) {
+  const body = await req.json()
 
-  const { slug } = await context.params;
+  const { error } = await supabase
+    .from("comments")
+    .insert([
+      {
+        slug: params.slug,
+        name: body.name,
+        message: body.message,
+      },
+    ])
 
-  const body = await req.json();
-
-  db.prepare(`
-    INSERT INTO comments (slug, name, text, createdAt)
-    VALUES (?, ?, ?, ?)
-  `).run(
-    slug,
-    body.name,
-    body.text,
-    new Date().toISOString()
-  );
-
-  return NextResponse.json({ success: true });
-
-}
-
-
-
-
-// DELETE COMMENT
-export async function DELETE(
-  req: NextRequest,
-  context: { params: Promise<{ slug: string }> }
-) {
-
-  const body = await req.json();
-
-  const id = body.id;
-  const token = body.token;
-
-  if (!id) {
-
-    return NextResponse.json(
-      { error: "ID fehlt" },
-      { status: 400 }
-    );
-
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  if (token !== process.env.ADMIN_DELETE_TOKEN) {
-
-    return NextResponse.json(
-      { error: "Falsches Passwort" },
-      { status: 401 }
-    );
-
-  }
-
-  db.prepare(`
-    DELETE FROM comments
-    WHERE id = ?
-  `).run(id);
-
-  return NextResponse.json({ success: true });
-
-}
-
-
-
-
-// 👍 LIKE COMMENT
-export async function PUT(
-  req: NextRequest,
-  context: { params: Promise<{ slug: string }> }
-) {
-
-  const body = await req.json();
-
-  const id = body.id;
-
-  if (!id) {
-
-    return NextResponse.json(
-      { error: "ID fehlt" },
-      { status: 400 }
-    );
-
-  }
-
-  db.prepare(`
-    UPDATE comments
-    SET likes = likes + 1
-    WHERE id = ?
-  `).run(id);
-
-  return NextResponse.json({ success: true });
-
+  return NextResponse.json({ success: true })
 }
