@@ -6,7 +6,7 @@ export default function Comments({ slug }: { slug: string }) {
 
   const [comments, setComments] = useState<any[]>([]);
   const [name, setName] = useState("");
-  const [text, setText] = useState("");
+  const [message, setMessage] = useState(""); // ✅ FIX
   const [liked, setLiked] = useState<number[]>([]);
 
 
@@ -43,7 +43,7 @@ export default function Comments({ slug }: { slug: string }) {
 
   async function submit() {
 
-    if (!name || !text) return;
+    if (!name || !message) return;
 
     await fetch(`/api/comments/${slug}`, {
 
@@ -55,13 +55,13 @@ export default function Comments({ slug }: { slug: string }) {
 
       body: JSON.stringify({
         name,
-        text,
+        message, // ✅ FIX
       }),
 
     });
 
     setName("");
-    setText("");
+    setMessage(""); // ✅ FIX
 
     load();
 
@@ -175,8 +175,8 @@ export default function Comments({ slug }: { slug: string }) {
 
       <textarea
         placeholder="Dein Kommentar..."
-        value={text}
-        onChange={(e) => setText(e.target.value)}
+        value={message} // ✅ FIX
+        onChange={(e) => setMessage(e.target.value)} // ✅ FIX
         style={{
           width: "100%",
           padding: 10,
@@ -235,13 +235,13 @@ export default function Comments({ slug }: { slug: string }) {
 
 
               <p>
-                {c.text}
+                {c.message} {/* ✅ FIX */}
               </p>
 
 
 
               <small>
-                {new Date(c.createdAt).toLocaleString()}
+                {new Date(c.created_at).toLocaleString()} {/* ✅ FIX */}
               </small>
 
 
@@ -251,13 +251,9 @@ export default function Comments({ slug }: { slug: string }) {
 
 
 
-              {/* 👍 LIKE BUTTON */}
-
               <button
                 onClick={() => likeComment(c.id)}
-
-                disabled={alreadyLiked}   // ✅ FIX
-
+                disabled={alreadyLiked}
                 style={{
                   marginRight: 10,
                   cursor: alreadyLiked ? "default" : "pointer",
@@ -268,8 +264,6 @@ export default function Comments({ slug }: { slug: string }) {
               </button>
 
 
-
-              {/* 🗑 DELETE BUTTON */}
 
               <button
                 onClick={() => deleteComment(c.id)}
