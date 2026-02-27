@@ -6,7 +6,7 @@ export default function Comments({ slug }: { slug: string }) {
 
   const [comments, setComments] = useState<any[]>([]);
   const [name, setName] = useState("");
-  const [message, setMessage] = useState(""); // ✅ FIX
+  const [message, setMessage] = useState("");
   const [liked, setLiked] = useState<number[]>([]);
 
 
@@ -55,13 +55,13 @@ export default function Comments({ slug }: { slug: string }) {
 
       body: JSON.stringify({
         name,
-        message, // ✅ FIX
+        message,
       }),
 
     });
 
     setName("");
-    setMessage(""); // ✅ FIX
+    setMessage("");
 
     load();
 
@@ -69,6 +69,7 @@ export default function Comments({ slug }: { slug: string }) {
 
 
 
+  // ✅ FIX HIER
   async function deleteComment(id: number) {
 
     const token = prompt("Admin Passwort eingeben:");
@@ -94,7 +95,10 @@ export default function Comments({ slug }: { slug: string }) {
 
       alert("Kommentar gelöscht ✅");
 
-      load();
+      // ✅ DIREKT AUS STATE ENTFERNEN
+      setComments((prev) =>
+        prev.filter((c) => c.id !== id)
+      );
 
     } else {
 
@@ -110,8 +114,6 @@ export default function Comments({ slug }: { slug: string }) {
 
     if (liked.includes(id)) return;
 
-
-
     await fetch(`/api/comments/${slug}`, {
 
       method: "PUT",
@@ -126,8 +128,6 @@ export default function Comments({ slug }: { slug: string }) {
 
     });
 
-
-
     const newLiked = [...liked, id];
 
     setLiked(newLiked);
@@ -136,8 +136,6 @@ export default function Comments({ slug }: { slug: string }) {
       "likedComments",
       JSON.stringify(newLiked)
     );
-
-
 
     load();
 
@@ -175,8 +173,8 @@ export default function Comments({ slug }: { slug: string }) {
 
       <textarea
         placeholder="Dein Kommentar..."
-        value={message} // ✅ FIX
-        onChange={(e) => setMessage(e.target.value)} // ✅ FIX
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
         style={{
           width: "100%",
           padding: 10,
@@ -235,13 +233,13 @@ export default function Comments({ slug }: { slug: string }) {
 
 
               <p>
-                {c.message} {/* ✅ FIX */}
+                {c.message}
               </p>
 
 
 
               <small>
-                {new Date(c.created_at).toLocaleString()} {/* ✅ FIX */}
+                {new Date(c.created_at).toLocaleString()}
               </small>
 
 
