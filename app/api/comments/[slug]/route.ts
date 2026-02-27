@@ -71,3 +71,47 @@ export async function POST(
 
  return NextResponse.json({ success: true });
 }
+
+
+
+// ✅ DELETE (NEU – DAS HAT GEFEHLT)
+export async function DELETE(
+ req: Request,
+ context: { params: Promise<{ slug: string }> }
+) {
+
+ const { slug } = await context.params;
+
+ const body = await req.json();
+
+ const id = body.id;
+ const token = body.token;
+
+ // Passwort prüfen
+ if (token !== process.env.ADMIN_DELETE_TOKEN) {
+
+  return NextResponse.json(
+   { error: "Unauthorized" },
+   { status: 401 }
+  );
+
+ }
+
+ const { error } = await supabase
+  .from("comments")
+  .delete()
+  .eq("id", id)
+  .eq("slug", slug);
+
+ if (error) {
+
+  return NextResponse.json(
+   { error: error.message },
+   { status: 500 }
+  );
+
+ }
+
+ return NextResponse.json({ success: true });
+
+}
