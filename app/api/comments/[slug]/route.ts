@@ -1,42 +1,58 @@
 import { NextResponse } from "next/server"
 import { supabase } from "@/lib/supabase"
 
+
+
+
+// GET comments
 export async function GET(
   req: Request,
-  { params }: { params: { slug: string } }
+  context: { params: { slug: string } }
 ) {
+
+  const slug = context.params.slug
+
   const { data, error } = await supabase
     .from("comments")
     .select("*")
-    .eq("slug", params.slug)
+    .eq("slug", slug)
     .order("created_at", { ascending: false })
 
-  if (error) {
+
+  if (error)
     return NextResponse.json({ error: error.message }, { status: 500 })
-  }
+
 
   return NextResponse.json(data)
 }
 
+
+
+
+
+// POST comment
 export async function POST(
   req: Request,
-  { params }: { params: { slug: string } }
+  context: { params: { slug: string } }
 ) {
+
+  const slug = context.params.slug
+
   const body = await req.json()
+
 
   const { error } = await supabase
     .from("comments")
-    .insert([
-      {
-        slug: params.slug,
-        name: body.name,
-        message: body.message,
-      },
-    ])
+    .insert({
+      slug,
+      name: body.name,
+      message: body.message
+    })
 
-  if (error) {
+
+  if (error)
     return NextResponse.json({ error: error.message }, { status: 500 })
-  }
+
 
   return NextResponse.json({ success: true })
 }
