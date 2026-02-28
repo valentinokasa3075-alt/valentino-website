@@ -27,7 +27,7 @@ export default function RootLayout({
           style={{
             position: "sticky",
             top: 0,
-            background: "transparent", // durchsichtig
+            background: "transparent",
             borderBottom: "none",
             padding: "14px 24px",
             zIndex: 10,
@@ -44,27 +44,44 @@ export default function RootLayout({
             }}
           >
             <nav style={{ display: "flex", gap: 16 }}>
+
               <Link
                 href="/"
                 style={{
                   textDecoration: "none",
-                  color: "white",
+                  color: "#00ffff", // ← geändert zu Alien-Blau
                   fontWeight: 600,
-                }}
-              >
+                  textShadow: "0 0 8px rgba(0,255,255,0.8)", // optional Glow
+              }}
+          >
                 Home
               </Link>
 
               <Link
-                href="/about"
-                style={{
-                  textDecoration: "none",
-                  color: "white",
-                  fontWeight: 600,
+              href="/about"
+              style={{
+              textDecoration: "none",
+              color: "#00ffff", // ← geändert zu Alien-Blau
+              fontWeight: 600,
+              textShadow: "0 0 8px rgba(0,255,255,0.8)", // optional Glow
                 }}
               >
                 About
               </Link>
+
+              {/* 👉 NUR DAS IST NEU */}
+              <Link
+                href="/kontakt"
+                style={{
+                  textDecoration: "none",
+                  color: "#00ffff",
+                  fontWeight: 600,
+                  textShadow: "0 0 8px rgba(0,255,255,0.8)",
+                }}
+              >
+                Kontakt
+              </Link>
+
             </nav>
           </div>
         </header>

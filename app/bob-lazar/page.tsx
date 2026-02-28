@@ -1,4 +1,10 @@
+"use client";
+import { useState } from "react";
+
 export default function BobLazarPage() {
+
+const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
 return (
 <main
 style={{
@@ -47,11 +53,13 @@ umstritten ist</b>.
   >
     <img
       src="/bob-lazar1.jpg"
+      onClick={() => setSelectedImage("/bob-lazar1.jpg")}
       style={{
         width: "100%",
         height: "320px",
         objectFit: "cover",
         borderRadius: "8px",
+        cursor: "pointer",
       }}
     />
 
@@ -80,11 +88,13 @@ umstritten ist</b>.
   >
     <img
       src="/bob-lazar2.jpg"
+      onClick={() => setSelectedImage("/bob-lazar2.jpg")}
       style={{
         width: "100%",
         height: "320px",
         objectFit: "cover",
         borderRadius: "8px",
+        cursor: "pointer",
       }}
     />
 
@@ -101,6 +111,7 @@ umstritten ist</b>.
   </div>
 
 </div>
+
 
 
 <h2 style={{ fontSize: 24, marginBottom: 8 }}>Kurzprofil</h2>
@@ -236,6 +247,35 @@ der behauptet, die größte Wahrheit der Menschheitsgeschichte gesehen zu haben.
 Ob Wahrheit oder Mythos – seine Geschichte lebt weiter.
 </p>
 
+{/* 🔍 IMAGE POPUP VIEWER – HINZUGEFÜGT */}
+{selectedImage && (
+  <div
+    onClick={() => setSelectedImage(null)}
+    style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100vw",
+      height: "100vh",
+      background: "rgba(0,0,0,0.9)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 9999,
+      cursor: "pointer",
+    }}
+  >
+    <img
+      src={selectedImage}
+      style={{
+        maxWidth: "90%",
+        maxHeight: "90%",
+        borderRadius: "12px",
+        boxShadow: "0 0 40px rgba(0,255,255,0.6)",
+      }}
+    />
+  </div>
+)}
 </main>
 
 );
