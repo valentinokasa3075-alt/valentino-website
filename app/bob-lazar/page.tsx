@@ -25,35 +25,80 @@ umstritten ist</b>.
 <hr style={{ border: "1px solid rgba(0,255,255,0.25)", margin: "30px 0" }} />
 
 
-{/* 👉 GALERIE EINGEFÜGT (NEU) */}
+{/* 🗂️ ARCHIV GALERIE – UPGRADE */}
 <div
-style={{
-display: "grid",
-gridTemplateColumns: "1fr 1fr",
-gap: "20px",
-marginBottom: "40px",
-}}
+  style={{
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "30px",
+    marginBottom: "50px",
+  }}
 >
 
-<img
-src="/bob-lazar.jpg"
-style={{ width: "100%", borderRadius: "10px" }}
-/>
+  {/* IMAGE CARD 1 */}
+  <div
+    style={{
+      background: "rgba(0,0,0,0.6)",
+      padding: "12px",
+      borderRadius: "12px",
+      border: "1px solid rgba(0,255,255,0.3)",
+      boxShadow: "0 0 15px rgba(0,255,255,0.25)",
+    }}
+  >
+    <img
+      src="/bob-lazar1.jpg"
+      style={{
+        width: "100%",
+        height: "320px",
+        objectFit: "cover",
+        borderRadius: "8px",
+      }}
+    />
 
-<img
-src="/s4.jpg"
-style={{ width: "100%", borderRadius: "10px" }}
-/>
+    <div
+      style={{
+        marginTop: "10px",
+        fontSize: "14px",
+        opacity: 0.8,
+      }}
+    >
+      📁 Archivbild #BL-01<br />
+      Bob Lazar – Privataufnahme
+    </div>
+  </div>
 
-<img
-src="/element115.jpg"
-style={{ width: "100%", borderRadius: "10px" }}
-/>
 
-<img
-src="/interview.jpg"
-style={{ width: "100%", borderRadius: "10px" }}
-/>
+  {/* IMAGE CARD 2 */}
+  <div
+    style={{
+      background: "rgba(0,0,0,0.6)",
+      padding: "12px",
+      borderRadius: "12px",
+      border: "1px solid rgba(0,255,255,0.3)",
+      boxShadow: "0 0 15px rgba(0,255,255,0.25)",
+    }}
+  >
+    <img
+      src="/bob-lazar2.jpg"
+      style={{
+        width: "100%",
+        height: "320px",
+        objectFit: "cover",
+        borderRadius: "8px",
+      }}
+    />
+
+    <div
+      style={{
+        marginTop: "10px",
+        fontSize: "14px",
+        opacity: 0.8,
+      }}
+    >
+      📁 Archivbild #BL-02<br />
+      Technische Zeichnung – Antriebssystem
+    </div>
+  </div>
 
 </div>
 
