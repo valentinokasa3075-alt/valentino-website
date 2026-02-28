@@ -62,7 +62,7 @@ return NextResponse.json({ success: true });
 
 
 
-// ✅ FINAL LIKE FUNCTION
+// ✅ LIKE (⭐⭐ FIX ⭐⭐)
 export async function PUT(
 req: Request
 ) {
@@ -71,7 +71,7 @@ const body = await req.json();
 const id = body.id;
 
 // aktuellen Wert holen
-const { data, error } = await supabase
+const { data: comment, error } = await supabase
 .from("comments")
 .select("likes")
 .eq("id", id)
@@ -80,11 +80,11 @@ const { data, error } = await supabase
 if (error)
 return NextResponse.json({ error }, { status: 500 });
 
-// erhöhen
+// neuen Wert speichern
 const { error: updateError } = await supabase
 .from("comments")
 .update({
-likes: (data.likes || 0) + 1
+likes: (comment.likes || 0) + 1
 })
 .eq("id", id);
 
