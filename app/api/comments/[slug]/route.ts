@@ -3,124 +3,119 @@ import { createClient } from "@supabase/supabase-js";
 
 export const dynamic = "force-dynamic";
 
-const supabaseUrl = process.env.SUPABASE_URL!;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY!;
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
+const supabase = createClient(
+process.env.SUPABASE_URL!,
+process.env.SUPABASE_ANON_KEY!
+);
 
 // ✅ GET
 export async function GET(
- req: Request,
- context: { params: Promise<{ slug: string }> }
+req: Request,
+context: { params: Promise<{ slug: string }> }
 ) {
 
- const { slug } = await context.params;
+const { slug } = await context.params;
 
- const { data, error } = await supabase
-  .from("comments")
-  .select("*")
-  .eq("slug", slug)
-  .order("created_at", { ascending: true });
+const { data, error } = await supabase
+.from("comments")
+.select("*")
+.eq("slug", slug)
+.order("created_at", { ascending: true });
 
- if (error) {
-  return NextResponse.json(
-   { error: error.message },
-   { status: 500 }
-  );
- }
+if (error)
+return NextResponse.json({ error }, { status: 500 });
 
- return NextResponse.json(data);
+return NextResponse.json(data);
+
 }
+
 
 
 
 // ✅ POST
 export async function POST(
- req: Request,
- context: { params: Promise<{ slug: string }> }
+req: Request,
+context: { params: Promise<{ slug: string }> }
 ) {
 
- const { slug } = await context.params;
+const { slug } = await context.params;
+const body = await req.json();
 
- const body = await req.json();
+const { error } = await supabase
+.from("comments")
+.insert([
+{
+slug,
+name: body.name,
+message: body.message,
+likes: 0
+}
+]);
 
- if (!body.name || !body.message) {
-  return NextResponse.json(
-   { error: "Missing fields" },
-   { status: 400 }
-  );
- }
+if (error)
+return NextResponse.json({ error }, { status: 500 });
 
- const { error } = await supabase
-  .from("comments")
-  .insert([
-   {
-    slug: slug,
-    name: body.name,
-    message: body.message,
-   },
-  ]);
+return NextResponse.json({ success: true });
 
- if (error) {
-  return NextResponse.json(
-   { error: error.message },
-   { status: 500 }
-  );
- }
-
- return NextResponse.json({ success: true });
 }
 
 
 
-// ✅ DELETE — FINAL FIX
-export async function DELETE(
- req: Request,
- context: { params: Promise<{ slug: string }> }
+
+// ✅ FINAL LIKE FUNCTION
+export async function PUT(
+req: Request
 ) {
 
- const { slug } = await context.params;
+const body = await req.json();
+const id = body.id;
 
- const body = await req.json();
+// aktuellen Wert holen
+const { data, error } = await supabase
+.from("comments")
+.select("likes")
+.eq("id", id)
+.single();
 
- const id = body.id;
- const token = body.token;
+if (error)
+return NextResponse.json({ error }, { status: 500 });
 
+// erhöhen
+const { error: updateError } = await supabase
+.from("comments")
+.update({
+likes: (data.likes || 0) + 1
+})
+.eq("id", id);
 
- if (token !== process.env.ADMIN_DELETE_TOKEN) {
+if (updateError)
+return NextResponse.json({ error: updateError }, { status: 500 });
 
-  return NextResponse.json(
-   { error: "Unauthorized" },
-   { status: 401 }
-  );
+return NextResponse.json({ success: true });
 
- }
-
-
- // ⭐⭐⭐ DAS IST DER FIX ⭐⭐⭐
-
- const { error, data } = await supabase
-  .from("comments")
-  .delete()
-  .eq("id", id)
-  .eq("slug", slug)
-  .select();   // ⭐ WICHTIG
-
-
- if (error) {
-
-  return NextResponse.json(
-   { error: error.message },
-   { status: 500 }
-  );
-
- }
+}
 
 
- return NextResponse.json({
-  success: true,
-  deleted: data
- });
+
+
+// ✅ DELETE
+export async function DELETE(
+req: Request,
+context: { params: Promise<{ slug: string }> }
+) {
+
+const { slug } = await context.params;
+const body = await req.json();
+
+if (body.token !== process.env.ADMIN_DELETE_TOKEN)
+return NextResponse.json({}, { status: 401 });
+
+await supabase
+.from("comments")
+.delete()
+.eq("id", body.id)
+.eq("slug", slug);
+
+return NextResponse.json({ success: true });
 
 }
