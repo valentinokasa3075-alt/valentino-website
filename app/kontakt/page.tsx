@@ -25,7 +25,8 @@ name,
 email,
 message
 }
-]);
+])
+.select(); // ✅ DIESE ZEILE IST NEU
 
 if (!error) {
 setSent(true);
