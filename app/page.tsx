@@ -5,15 +5,10 @@ export default function Home() {
     <main
       style={{
         minHeight: "100vh",
-
-        // Zentrierung
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-
         padding: "60px 20px",
-
-        // Hintergrund
         backgroundImage: "url('/ufo.png')",
         backgroundSize: "cover",
         backgroundPosition: "right center",
@@ -24,14 +19,9 @@ export default function Home() {
         style={{
           maxWidth: "900px",
           width: "100%",
-
           padding: "40px",
           borderRadius: "12px",
-
-          // Neon Farbe
           color: "#00ffff",
-
-          // Glow Effekt
           textShadow: "0 0 8px rgba(0,255,255,0.8)",
         }}
       >
@@ -85,29 +75,46 @@ export default function Home() {
           </p>
         </div>
 
-        {/* BUTTON */}
+        {/* EVENTS BUTTON */}
         <Link
           href="/events"
           style={{
             display: "inline-block",
             padding: "14px 20px",
             borderRadius: "12px",
-
             border: "1px solid #00ffff",
-
             background: "rgba(0,255,255,0.08)",
-
             color: "#00ffff",
-
             textDecoration: "none",
-
             fontWeight: 700,
-
             boxShadow: "0 0 10px rgba(0,255,255,0.6)",
+            marginRight: "20px",
           }}
         >
           👉 Hier geht es zu den Ereignissen & Fälle
         </Link>
+
+
+        {/* ⭐ NEUER BOB LAZAR BUTTON */}
+        <Link
+          href="/bob-lazar"
+          style={{
+            display: "inline-block",
+            padding: "14px 20px",
+            borderRadius: "12px",
+            border: "1px solid #00ffff",
+            background: "rgba(0,255,255,0.08)",
+            color: "#00ffff",
+            textDecoration: "none",
+            fontWeight: 700,
+            boxShadow: "0 0 10px rgba(0,255,255,0.6)",
+            marginTop: "20px",
+          }}
+        >
+          👤 Zur vollständigen Bob Lazar Akte
+        </Link>
+
+
       </div>
     </main>
   );
