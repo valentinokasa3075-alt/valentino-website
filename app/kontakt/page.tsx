@@ -160,7 +160,7 @@ color: "#00ffff",
         boxShadow: "0 0 20px rgba(0,255,255,0.4)",
       }}
     >
-      ✅ Nachricht erfolgreich übermittelt.
+      Nachricht erfolgreich übermittelt. Vielen Dank für deinen Beitrag zum Archiv! 
     </div>
 
   )}
