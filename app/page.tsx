@@ -111,7 +111,7 @@ export default function Home() {
             marginTop: "20px",
           }}
         >
-          Bob Lazar - Der Mann, der zu viel wusste
+          👤 Bob Lazar - Der Mann, der zu viel wusste
         </Link>
 
 
