@@ -48,8 +48,8 @@ export default function Home() {
 
           <p style={{ fontSize: "20px", marginTop: "18px" }}>
             Während andere Kinder einfach nur in den Himmel blickten, suchte ich
-            nach Zeichen. Nach Bewegungen. Nach Hinweisen. Ich verschlang
-            Dokumentationen, studierte Berichte und hörte Interviews – besonders
+            nach Zeichen. Nach Bewegungen. Nach Hinweisen. Im späteren Alter verschlang
+            ich zahlreiche Dokumentationen, studierte Berichte und hörte Interviews – besonders
             die Aussagen von <strong>Bob Lazar</strong> haben meine Sicht für
             immer verändert.
           </p>
@@ -91,7 +91,7 @@ export default function Home() {
             marginRight: "20px",
           }}
         >
-          👉 Hier geht es zu den Ereignissen & Fälle
+          👉 Erforsche die dokumentierten Begegnungen
         </Link>
 
 
@@ -111,7 +111,7 @@ export default function Home() {
             marginTop: "20px",
           }}
         >
-          👤 Zur vollständigen Bob Lazar Akte
+          Bob Lazar - Der Mann, der zu viel wusste
         </Link>
 
 
