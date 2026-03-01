@@ -26,7 +26,7 @@ email,
 message
 }
 ])
-.select(); // ✅ DIESE ZEILE IST NEU
+.select();
 
 if (!error) {
 setSent(true);
@@ -38,6 +38,9 @@ console.error(error);
 }
 
 return (
+
+<div className="about-background"> {/* 👈 ERGÄNZUNG */}
+
 <main
 style={{
 maxWidth: 900,
@@ -74,7 +77,6 @@ color: "#00ffff",
       }}
     >
 
-      {/* NAME */}
       <input
         name="name"
         placeholder="Dein Name"
@@ -91,7 +93,7 @@ color: "#00ffff",
         }}
       />
 
-      {/* EMAIL */}
+
       <input
         name="email"
         type="email"
@@ -110,7 +112,6 @@ color: "#00ffff",
       />
 
 
-      {/* MESSAGE */}
       <textarea
         name="message"
         placeholder="Deine Nachricht..."
@@ -130,7 +131,6 @@ color: "#00ffff",
       />
 
 
-      {/* BUTTON */}
       <button
         type="submit"
         style={{
@@ -166,6 +166,8 @@ color: "#00ffff",
   )}
 
 </main>
+
+</div>  
 
 );
 
